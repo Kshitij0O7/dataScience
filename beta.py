@@ -2,13 +2,13 @@ from data import returns
 import statsmodels.api as sm
 import pandas as pd
 import numpy as np
-print(returns.dtypes)
+# print(returns)
 
 def average(returns):
     # Calculate average returns for each stock
-    avg_returns = {}
+    avg_returns = []
     for column in returns.columns:
-        avg_returns[column] = returns[column].sum() / len(returns[column])
+        avg_returns.append(returns[column].sum() / len(returns[column]))
     return avg_returns
 
 # Assuming 'market_returns' is already defined
@@ -25,18 +25,20 @@ for stock_returns in returns.columns:
 # Store betas with stock symbols
 betas_df = pd.DataFrame({'Stock': returns.columns, 'Beta': betas})
 
-print(betas_df.dtypes)
+# print(betas_df.dtypes)
 
-betas_df = pd.get_dummies(betas_df, columns=['Stock'])
+# betas_df = pd.get_dummies(betas_df, columns=['Stock'])
 
-print(betas_df)
+# print(betas_df)
 
 # Assuming 'average_returns' is already calculated
 average_returns = average(returns)
 y = average_returns
+print("avg")
+print(y)
 
 # Check data types again
-X = sm.add_constant(betas_df)
+X = sm.add_constant(betas_df['Beta'])
 model = sm.OLS(y, X)
 results = model.fit()
 
