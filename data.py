@@ -1,15 +1,22 @@
 import yfinance as yf
 
-# Define stock symbols
-stocks = ['RELIANCE.NS', 'TCS.NS', 'HDFCBANK.NS']  # Add all BSE stock symbols
+def collect_stocks_data(stocks):
+    # Fetch data
+    stock_data = yf.download(stocks, start='2019-01-01', end='2024-01-01', interval='1mo')['Adj Close']
 
-# Fetch data
-data = yf.download(stocks, start='2019-01-01', end='2024-01-01')['Adj Close']
+    # Calculate returns
+    return stock_data.pct_change().dropna()
 
-missing_values = data.isnull().sum()
+def collect_stock_data(stock):
+    # Fetch data
+    stock_data = yf.download(stock, start='2019-01-01', end='2024-01-01', interval='1mo')['Adj Close']
 
-# Handle missing values
-data = data.dropna()
+    # Calculate returns
+    return stock_data.dropna()
 
-# Calculate returns
-returns = data.pct_change().dropna()
+def collect_market_data(market_index):
+    # Fetch data
+    market_data = yf.download(market_index, start='2019-01-01', end='2024-01-01', interval='1mo')['Adj Close']
+
+    # Calculate returns
+    return market_data.pct_change().dropna()
